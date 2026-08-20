@@ -1,17 +1,15 @@
 import { notFound } from 'next/navigation';
 
-import { findConcertFixture, ManualItineraryScreen } from '@/features/trip-create';
+import { DayItineraryScreen, getTripFixture } from '@/features/trip';
 
 interface TripDayPageProps {
   params: Promise<{ tripId: string; date: string }>;
-  searchParams: Promise<{ concertId?: string }>;
 }
 
-export default async function TripDayPage({ params, searchParams }: TripDayPageProps) {
-  const [{ tripId, date }, { concertId }] = await Promise.all([params, searchParams]);
-  const concert = concertId ? findConcertFixture(concertId) : undefined;
-
-  if (tripId !== 'draft' || !concert || concert.date !== date) notFound();
-
-  return <ManualItineraryScreen concert={concert} />;
+export default async function TripDayPage({ params }: TripDayPageProps) {
+  const { tripId, date } = await params;
+  const trip = getTripFixture(tripId);
+  const day = trip?.days.find((item) => item.date === date);
+  if (!trip || !day) notFound();
+  return <DayItineraryScreen trip={trip} initialDay={day} />;
 }

@@ -5,13 +5,13 @@ import { findConcertFixture } from '@/features/trip-create';
 
 interface AiGeneratingRoutePageProps {
   params: Promise<{ tripId: string }>;
-  searchParams: Promise<{ concertId?: string; tripStartDate?: string; preview?: string }>;
+  searchParams: Promise<{ concertId?: string; tripStartDate?: string; targetDate?: string; preview?: string }>;
 }
 
 const previews: AiGenerationPreview[] = ['auto', 'loading', 'failure', 'success'];
 
 export default async function AiGeneratingRoutePage({ params, searchParams }: AiGeneratingRoutePageProps) {
-  const [{ tripId }, { concertId, tripStartDate, preview }] = await Promise.all([params, searchParams]);
+  const [{ tripId }, { concertId, tripStartDate, targetDate, preview }] = await Promise.all([params, searchParams]);
   const concert = concertId ? findConcertFixture(concertId) : undefined;
 
   if (tripId !== 'draft' || !concert) notFound();
@@ -20,7 +20,7 @@ export default async function AiGeneratingRoutePage({ params, searchParams }: Ai
   const input = {
     tripId,
     concertId: concert.id,
-    targetDate: concert.date,
+    targetDate: targetDate ?? concert.date,
     tripStartDate: tripStartDate ?? concert.date,
   };
 
