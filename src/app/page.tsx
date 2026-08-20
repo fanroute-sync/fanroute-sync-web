@@ -1,5 +1,12 @@
-import { emptyHomeFixture, HomeScreen } from '@/features/home';
+import { emptyHomeFixture, HomeScreen, registeredHomeFixture } from '@/features/home';
 
-export default function Home() {
-  return <HomeScreen data={emptyHomeFixture} />;
+interface HomePageProps {
+  searchParams: Promise<{ preview?: string }>;
+}
+
+export default async function Home({ searchParams }: HomePageProps) {
+  const { preview } = await searchParams;
+  const homeData = preview === 'registered' ? registeredHomeFixture : emptyHomeFixture;
+
+  return <HomeScreen data={homeData} />;
 }

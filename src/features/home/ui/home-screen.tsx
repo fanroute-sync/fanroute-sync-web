@@ -1,11 +1,12 @@
 import { Bell } from 'lucide-react';
 
 import { AppShell, ContentContainer, Header } from '@/components/layout';
-import type { EmptyHomeData } from '@/features/home/model/home';
+import type { HomeData } from '@/features/home/model/home';
 import { EmptyHome } from '@/features/home/ui/empty-home';
+import { RegisteredHome } from '@/features/home/ui/registered-home';
 
 interface HomeScreenProps {
-  data: EmptyHomeData;
+  data: HomeData;
 }
 
 export function HomeScreen({ data }: HomeScreenProps) {
@@ -22,7 +23,7 @@ export function HomeScreen({ data }: HomeScreenProps) {
         />
       }
     >
-      <ContentContainer><EmptyHome data={data} /></ContentContainer>
+      <ContentContainer>{data.status === 'empty' ? <EmptyHome data={data} /> : <RegisteredHome data={data} />}</ContentContainer>
     </AppShell>
   );
 }
