@@ -29,7 +29,9 @@ describe('TripCreateScreen recommendation flow', () => {
     const user = await completeTripForm();
     await user.click(screen.getByRole('button', { name: /예, 추천받을게요/ }));
 
-    expect(push).toHaveBeenCalledWith('/trips/draft/ai-generating?concertId=concert-summer-wave');
+    expect(push).toHaveBeenCalledWith(
+      '/trips/draft/ai-generating?concertId=concert-summer-wave&tripStartDate=2026-08-22'
+    );
   });
 
   it('routes recommendation no directly to the empty day itinerary', async () => {
@@ -37,7 +39,7 @@ describe('TripCreateScreen recommendation flow', () => {
     await user.click(screen.getByRole('button', { name: /아니오, 직접 구성할게요/ }));
 
     expect(push).toHaveBeenCalledWith(
-      '/trips/draft/days/2026-08-23?concertId=concert-summer-wave'
+      '/trips/draft/days/2026-08-23?concertId=concert-summer-wave&tripStartDate=2026-08-22'
     );
   });
 });

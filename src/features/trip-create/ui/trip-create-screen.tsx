@@ -39,7 +39,10 @@ export function TripCreateScreen() {
   const moveToRecommendation = () => setStep(2);
   const selectRecommendation = (recommended: boolean) => {
     if (!selectedConcert) return;
-    const query = new URLSearchParams({ concertId: selectedConcert.id });
+    const query = new URLSearchParams({
+      concertId: selectedConcert.id,
+      tripStartDate: formValues.arrivalDate ?? selectedConcert.date,
+    });
     if (recommended) {
       router.push(`/trips/draft/ai-generating?${query.toString()}`);
       return;
