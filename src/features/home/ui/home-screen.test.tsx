@@ -24,7 +24,7 @@ describe('HomeScreen', () => {
     expect(screen.getByText('SUMMER WAVE in BUSAN')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /오늘 일정 보기/ })).toHaveAttribute(
       'href',
-      '/trips/trip-busan-2026/days/2026-08-20'
+      '/trips/trip-busan-2026/days/2026-08-23'
     );
     expect(screen.getByRole('heading', { name: '과거에 만든 루트' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: '추천 루트 바로가기' })).toBeInTheDocument();

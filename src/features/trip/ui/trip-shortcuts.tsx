@@ -9,7 +9,7 @@ export function TripShortcuts({ tripId }: TripShortcutsProps) {
   const items = [
     { href: `/trips/${tripId}/accommodation`, label: '숙박 정보', icon: BedDouble },
     { href: `/trips/${tripId}/style`, label: '여행 스타일', icon: SlidersHorizontal },
-    { href: `#trip-note`, label: '메모장', icon: NotebookPen },
+    { href: `/trips/${tripId}#trip-note`, label: '메모장', icon: NotebookPen },
   ] as const;
 
   return (

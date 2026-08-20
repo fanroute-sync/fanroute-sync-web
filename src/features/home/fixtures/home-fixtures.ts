@@ -51,26 +51,26 @@ export const registeredHomeFixture: RegisteredHomeData = {
     concertName: 'SUMMER WAVE in BUSAN',
     concertDate: '8월 23일',
     venue: '부산아시아드주경기장',
-    todayDate: '2026-08-20',
+    todayDate: '2026-08-23',
   },
   pastRoutes: [
     {
       id: 'past-route-1',
       title: '광안리와 해운대를 잇는 하루',
       description: '2025.06.14 · 5개 장소',
-      href: '/trips/past-route-1',
+      href: '/trips/trip-busan-2026',
     },
     {
       id: 'past-route-2',
       title: '서면 맛집 중심 공연 원정',
       description: '2025.03.09 · 4개 장소',
-      href: '/trips/past-route-2',
+      href: '/trips/trip-busan-2026',
     },
   ],
   recommendedRoute: {
     id: 'recommended-route-1',
     title: '공연장 근처 반나절 추천 루트',
     description: '이동은 짧게, 부산의 분위기는 충분히 즐겨보세요.',
-    href: '/community/recommended-route-1',
+    href: '/community/route-post-1',
   },
 };
