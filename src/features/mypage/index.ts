@@ -1,5 +1,9 @@
 export { myPageFixture } from './fixtures/mypage-fixtures';
+export { termsFixtures } from './fixtures/terms-fixtures';
 export { ActivityPageScreen } from './ui/activity-page-screen';
 export { AiUsageScreen } from './ui/ai-usage-screen';
+export { LanguageSettingsScreen } from './ui/language-settings-screen';
 export { MyPageScreen } from './ui/mypage-screen';
 export { ProfileEditScreen } from './ui/profile-edit-screen';
+export { TermsDetailScreen } from './ui/terms-detail-screen';
+export { TermsScreen } from './ui/terms-screen';
