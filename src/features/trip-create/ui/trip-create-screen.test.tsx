@@ -39,7 +39,7 @@ describe('TripCreateScreen recommendation flow', () => {
     await user.click(screen.getByRole('button', { name: /아니오, 직접 구성할게요/ }));
 
     expect(push).toHaveBeenCalledWith(
-      '/trips/draft/days/2026-08-23?concertId=concert-summer-wave&tripStartDate=2026-08-22'
+      '/trips/draft/days/2026-08-23?concertId=concert-summer-wave&tripStartDate=2026-08-22&mode=manual'
     );
   });
 });

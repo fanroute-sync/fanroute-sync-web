@@ -47,6 +47,7 @@ export function TripCreateScreen() {
       router.push(`/trips/draft/ai-generating?${query.toString()}`);
       return;
     }
+    query.set('mode', 'manual');
     router.push(`/trips/draft/days/${selectedConcert.date}?${query.toString()}`);
   };
 

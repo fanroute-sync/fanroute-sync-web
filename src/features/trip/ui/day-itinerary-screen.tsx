@@ -37,7 +37,7 @@ export function DayItineraryScreen({ trip, initialDay }: DayItineraryScreenProps
         </nav>
 
         <div className='flex gap-2'>
-          <Link href={`/trips/${trip.id}/ai-generating?concertId=${trip.concert.id}&tripStartDate=${trip.startDate}&targetDate=${initialDay.date}`} className='flex h-10 flex-1 items-center justify-center gap-2 rounded-xl bg-violet-50 text-sm font-semibold text-violet-700'><Sparkles aria-hidden='true' size={17} />AI 일정 · 잔여 {trip.aiUsage.remaining}/{trip.aiUsage.limit}</Link>
+          {trip.aiUsage.remaining > 0 ? <Link href={`/trips/${trip.id}/ai-generating?concertId=${trip.concert.id}&tripStartDate=${trip.startDate}&targetDate=${initialDay.date}`} className='flex h-10 flex-1 items-center justify-center gap-2 rounded-xl bg-violet-50 text-sm font-semibold text-violet-700'><Sparkles aria-hidden='true' size={17} />AI 일정 · 잔여 {trip.aiUsage.remaining}/{trip.aiUsage.limit}</Link> : <button type='button' disabled className='flex h-10 flex-1 items-center justify-center gap-2 rounded-xl bg-gray-100 text-sm font-semibold text-gray-400'><Sparkles aria-hidden='true' size={17} />AI 일정 · 잔여 0/{trip.aiUsage.limit}</button>}
           <Button variant='outline' size='sm'>편집</Button>
         </div>
 
@@ -71,6 +71,7 @@ export function DayItineraryScreen({ trip, initialDay }: DayItineraryScreenProps
               </li>
             ))}
           </ol>
+          {items.every((item) => item.type === 'concert') ? <p className='mt-4 rounded-2xl bg-gray-50 px-4 py-8 text-center text-sm leading-6 text-gray-500'>아직 추가된 일반 장소가 없어요.<br />공연 일정 외에는 직접 채워보세요.</p> : null}
         </section>
 
         <Link href={`/trips/${trip.id}/days/${initialDay.date}/places/add`} className='flex h-12 items-center justify-center gap-2 rounded-xl border border-violet-300 font-semibold text-violet-700'><Plus aria-hidden='true' size={18} />장소 / 일정 추가하기</Link>
