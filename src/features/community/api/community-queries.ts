@@ -13,10 +13,10 @@ export const communityKeys = {
 };
 
 export function useCommunityPosts() {
-  return useQuery({ queryKey: communityKeys.lists(), queryFn: communityRepository.listPosts, initialData: communityPostFixtures });
+  return useQuery({ queryKey: communityKeys.lists(), queryFn: communityRepository.listPosts, placeholderData: communityPostFixtures });
 }
 
-export function useCommunityPost(postId: string, initialData: CommunityPost) {
+export function useCommunityPost(postId: string, initialData?: CommunityPost) {
   return useQuery<CommunityPost>({ queryKey: communityKeys.detail(postId), queryFn: async () => { const post = await communityRepository.getPost(postId); if (!post) throw new Error('NOT_FOUND'); return post; }, initialData });
 }
 

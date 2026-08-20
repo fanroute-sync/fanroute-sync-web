@@ -15,7 +15,7 @@ type TypeFilter = 'ALL' | CommunityPostType;
 const typeTabs = [{ value: 'ALL', label: '전체' }, { value: 'INFO', label: '정보 공유' }, { value: 'REFERENCE_ROUTE', label: '참고 루트' }, { value: 'COMPANION', label: '동행 모집' }] as const;
 
 export function CommunityListScreen() {
-  const { data: posts } = useCommunityPosts();
+  const { data: posts = [] } = useCommunityPosts();
   const [query, setQuery] = useState('');
   const [type, setType] = useState<TypeFilter>('ALL');
   const [region, setRegion] = useState('부산 전체');

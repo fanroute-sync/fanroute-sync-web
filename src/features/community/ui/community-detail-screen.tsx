@@ -4,17 +4,19 @@ import { Copy, Heart, MessageCircle, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { ConfirmDialog } from '@/components/common';
+import { ConfirmDialog, ErrorState, Loading } from '@/components/common';
 import { AppShell, ContentContainer, PageHeader } from '@/components/layout';
 import { Badge, Button, Card, Input } from '@/components/ui';
 import { useAddComment, useCommunityPost, useDeleteComment, useDeletePost, useToggleCommentLike, useTogglePostLike } from '@/features/community/api/community-queries';
 import { POST_TYPE_LABELS, type CommunityComment, type CommunityPost } from '@/features/community/model/community';
 import { CommentThread } from '@/features/community/ui/comment-thread';
 
-export function CommunityDetailScreen({ initialPost }: { initialPost: CommunityPost }) {
-  const router = useRouter(); const { data: post } = useCommunityPost(initialPost.id, initialPost);
-  const postLike = useTogglePostLike(post.id); const commentLike = useToggleCommentLike(post.id); const addComment = useAddComment(post.id); const deletePost = useDeletePost(post.id); const deleteComment = useDeleteComment(post.id);
+export function CommunityDetailScreen({ initialPost, postId = initialPost?.id ?? '' }: { postId?: string; initialPost?: CommunityPost }) {
+  const router = useRouter(); const { data: post, isError } = useCommunityPost(postId, initialPost);
+  const postLike = useTogglePostLike(postId); const commentLike = useToggleCommentLike(postId); const addComment = useAddComment(postId); const deletePost = useDeletePost(postId); const deleteComment = useDeleteComment(postId);
   const [content, setContent] = useState(''); const [replying, setReplying] = useState<{ rootId: string; author: string } | null>(null); const [deleteOpen, setDeleteOpen] = useState(false);
+  if (isError) return <AppShell showBottomNavigation={false} header={<PageHeader title='게시글' backHref='/community' />}><ErrorState title='게시글을 찾을 수 없어요' /></AppShell>;
+  if (!post) return <AppShell showBottomNavigation={false} header={<PageHeader title='게시글' backHref='/community' />}><Loading label='게시글을 불러오는 중' /></AppShell>;
   const submitComment = () => { if (!content.trim()) return; const comment: CommunityComment = { id: `comment-${Date.now()}`, author: '부산원정러', content: content.trim(), createdAt: new Date().toISOString(), likeCount: 0, liked: false, rootCommentId: replying?.rootId ?? null, mine: true }; addComment.mutate(comment, { onSuccess: () => { setContent(''); setReplying(null); } }); };
   const copyRoute = async () => { if (!post.route) return; try { await navigator.clipboard.writeText(post.route.shareLink); toast.success('Fan Route 링크를 복사했어요.'); } catch { toast.error('링크를 복사하지 못했어요.'); } };
   return <AppShell showBottomNavigation={false} header={<PageHeader title='게시글' backHref='/community' action={post.mine ? <button type='button' aria-label='게시글 삭제' onClick={() => setDeleteOpen(true)} className='grid size-9 place-items-center text-red-600'><Trash2 aria-hidden='true' size={18} /></button> : null} />}><ContentContainer className='space-y-7'>
