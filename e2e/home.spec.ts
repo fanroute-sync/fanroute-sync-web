@@ -3,5 +3,5 @@ import { expect, test } from '@playwright/test';
 test('displays the home page', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page).toHaveTitle(/Fan Route Sync/i);
+  await expect(page).toHaveTitle(/Troadie/i);
 });

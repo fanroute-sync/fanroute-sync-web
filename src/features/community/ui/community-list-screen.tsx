@@ -29,7 +29,7 @@ export function CommunityListScreen() {
   }, [posts, query, region, sort, type]);
 
   return (
-    <AppShell header={<Header title='Fan Route Sync' />}>
+    <AppShell header={<Header />}>
       <ContentContainer className='space-y-5'>
         <SearchInput aria-label='공연명, 장소, 해시태그 검색' placeholder='공연명 / 장소 / 해시태그 검색' value={query} onChange={(event) => setQuery(event.target.value)} onClear={() => setQuery('')} />
         <Tabs items={typeTabs} value={type} onValueChange={setType} ariaLabel='게시판 타입' className='overflow-x-auto' />

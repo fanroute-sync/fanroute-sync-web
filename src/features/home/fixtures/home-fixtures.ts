@@ -27,7 +27,7 @@ const magazines = [
 const notices = [
   {
     id: 'notice-1',
-    title: 'Fan Route Sync 이용 안내',
+    title: 'Troadie 이용 안내',
     description: '나만의 부산 콘서트 여행을 만드는 방법을 알려드려요.',
     category: '공지',
   },
