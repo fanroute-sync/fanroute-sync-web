@@ -4,6 +4,7 @@ import { Apple, MessageCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
+import { BrandLockup } from '@/components/common';
 import { Badge, Button } from '@/components/ui';
 import { OnboardingFrame } from '@/features/onboarding/ui/onboarding-frame';
 
@@ -27,7 +28,7 @@ export function LoginScreen() {
   };
 
   return (
-    <OnboardingFrame step={2} title='Fan Route Sync 시작하기' description='소셜 계정으로 간편하게 로그인하세요.'>
+    <OnboardingFrame step={2} brand={<BrandLockup />} title='Troadie 시작하기' description='소셜 계정으로 간편하게 로그인하세요.'>
       <div className='mt-8 space-y-3'>
         <Button variant='outline' size='lg' fullWidth onClick={handleGoogleLogin}>
           <GoogleMark /> Google로 계속하기
