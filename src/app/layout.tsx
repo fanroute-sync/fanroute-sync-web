@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Fan Route Sync',
+  title: 'Troadie',
   description: '공연 전후 부산 여행 일정을 추천하고 공유하는 팬덤 관광 서비스',
 };
 
