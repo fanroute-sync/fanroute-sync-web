@@ -8,7 +8,7 @@ interface BrandLockupProps {
 export function BrandLockup({ className }: BrandLockupProps) {
   return (
     <div className={cn('flex items-center gap-2', className)}>
-      <RouteMark className='size-8' />
+      <RouteMark className='size-10' />
       <span className='text-2xl font-bold tracking-tight text-gray-950'>Troadie</span>
     </div>
   );
