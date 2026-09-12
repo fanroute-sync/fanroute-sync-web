@@ -4,4 +4,3 @@ export { EmptyState } from './empty-state';
 export { ErrorState } from './error-state';
 export { Loading } from './loading';
 export { RouteMark } from './route-mark';
-export { Wordmark } from './wordmark';

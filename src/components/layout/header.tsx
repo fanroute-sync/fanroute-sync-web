@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Wordmark } from '@/components/common/wordmark';
+import { BrandLockup } from '@/components/common/brand-lockup';
 import { cn } from '@/lib/utils/cn';
 
 interface HeaderProps {
@@ -10,7 +10,7 @@ interface HeaderProps {
   className?: string;
 }
 
-export function Header({ title = <Wordmark />, leading, action, className }: HeaderProps) {
+export function Header({ title = <BrandLockup size='sm' />, leading, action, className }: HeaderProps) {
   return (
     <header
       className={cn(
