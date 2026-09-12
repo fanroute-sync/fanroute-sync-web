@@ -20,7 +20,7 @@ Tailwind v4 기본 팔레트를 그대로 사용 — 커스텀 hex 토큰을 새
 | accent 배경(배지, 아이콘 배경) | `violet-50` | 옅은 보라 |
 | accent 보더/포커스 링 | `violet-500` | — |
 
-로고: 워드마크(T**ROAD**IE, "ROAD"만 `violet-600`)와 앱 아이콘(둥근 사각 배지 + `violet-600` 배경 + 흰색 route 아이콘, `src/app/icon.svg`)으로 확정. `src/components/common/wordmark.tsx` 참고.
+로고: **Route Mark 아이콘 + "Troadie" 워드마크 록업**(헤더·로그인 등 텍스트가 들어가는 모든 자리)과 **앱 아이콘**(둥근 사각 배지 + `violet-600` 배경 + 흰색 route 아이콘, `src/app/icon.svg`, 파비콘 전용)으로 확정. `src/components/common/route-mark.tsx`, `brand-lockup.tsx` 참고. 초기 검토했던 "T**ROAD**IE" 전체 대문자 단독 워드마크안은 폐기.
 
 ### 2-2. 아래는 폐기된 초안 (참고용으로만 남김)
 
