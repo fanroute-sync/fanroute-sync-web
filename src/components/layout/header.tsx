@@ -24,7 +24,7 @@ export function Header({ title, leading, action, className }: HeaderProps) {
       <h1 className={cn('min-w-0 flex-1 truncate text-lg font-bold text-gray-950', isBrand ? 'text-left' : 'text-center')}>
         {title ?? <BrandLockup size='sm' />}
       </h1>
-      <div className='flex min-w-10 items-center justify-end'>{action}</div>
+      {action && <div className='flex min-w-10 items-center justify-end'>{action}</div>}
     </header>
   );
 }
