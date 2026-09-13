@@ -17,7 +17,7 @@ describe('Phase 6 trip screens', () => {
     render(<TripDetailScreen trip={tripFixture} />);
     expect(screen.getByRole('heading', { name: /2026-08-22 — 2026-08-24/ })).toBeInTheDocument();
     expect(screen.getByText('D2 ★')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Fan Route에 공유하기/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Troadie에 공유하기/ })).toBeInTheDocument();
   });
 
   it('never exposes change or delete controls on a concert card', () => {

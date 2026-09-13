@@ -58,7 +58,7 @@ export function TripDetailScreen({ trip }: TripDetailScreenProps) {
         </section>
 
         <div className='space-y-3'>
-          <Link href={`/community/write?tripId=${trip.id}`} className='flex h-12 items-center justify-center gap-2 rounded-xl bg-violet-600 px-5 font-semibold text-white'><Share2 aria-hidden='true' size={18} />Fan Route에 공유하기</Link>
+          <Link href={`/community/write?tripId=${trip.id}`} className='flex h-12 items-center justify-center gap-2 rounded-xl bg-violet-600 px-5 font-semibold text-white'><Share2 aria-hidden='true' size={18} />Troadie에 공유하기</Link>
           <Link href={`/trips/${trip.id}/days/${trip.days[0]?.date}`} className='flex h-12 items-center justify-center rounded-xl border border-gray-300 font-semibold text-gray-900'>일정 편집하기</Link>
         </div>
       </ContentContainer>

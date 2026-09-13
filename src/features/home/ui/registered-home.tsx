@@ -57,7 +57,7 @@ export function RegisteredHome({ data }: RegisteredHomeProps) {
         <h2 id='recommended-route-title' className='mb-3 text-lg font-bold text-gray-950'>추천 루트 바로가기</h2>
         <Link href={data.recommendedRoute.href} className='block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500'>
           <Card className='border-violet-200 bg-violet-50 shadow-none'>
-            <Badge variant='primary'>Fan Route 추천</Badge>
+            <Badge variant='primary'>Troadie 추천</Badge>
             <div className='mt-3 flex items-center gap-3'>
               <div className='min-w-0 flex-1'>
                 <h3 className='font-semibold text-gray-950'>{data.recommendedRoute.title}</h3>

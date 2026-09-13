@@ -10,7 +10,9 @@ interface HeaderProps {
   className?: string;
 }
 
-export function Header({ title = <BrandLockup size='sm' />, leading, action, className }: HeaderProps) {
+export function Header({ title, leading, action, className }: HeaderProps) {
+  const isBrand = title === undefined;
+
   return (
     <header
       className={cn(
@@ -18,8 +20,10 @@ export function Header({ title = <BrandLockup size='sm' />, leading, action, cla
         className
       )}
     >
-      <div className='flex min-w-10 items-center justify-start'>{leading}</div>
-      <h1 className='min-w-0 flex-1 truncate text-center text-lg font-bold text-gray-950'>{title}</h1>
+      {leading && <div className='flex min-w-10 items-center justify-start'>{leading}</div>}
+      <h1 className={cn('min-w-0 flex-1 truncate text-lg font-bold text-gray-950', isBrand ? 'text-left' : 'text-center')}>
+        {title ?? <BrandLockup size='sm' />}
+      </h1>
       <div className='flex min-w-10 items-center justify-end'>{action}</div>
     </header>
   );
