@@ -17,7 +17,6 @@ export function RouteMark({ className }: RouteMarkProps) {
         strokeLinecap='round'
         fill='none'
       />
-      <circle cx={34} cy={6} r={6.5} fill='currentColor' />
     </svg>
   );
 }
