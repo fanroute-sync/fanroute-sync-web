@@ -6,7 +6,7 @@ interface RouteMarkProps {
 
 export function RouteMark({ className }: RouteMarkProps) {
   return (
-    <svg viewBox='0 0 48 48' fill='none' aria-hidden='true' className={cn('text-violet-600', className)}>
+    <svg viewBox='-2 -2 52 52' fill='none' aria-hidden='true' className={cn('text-violet-600', className)}>
       <path d='M6 40C6 28 18 30 20 20C22 10 34 12 34 6' stroke='currentColor' strokeWidth={7} strokeLinecap='round' fill='none' />
       <path
         d='M6 40C6 28 18 30 20 20C22 10 34 12 34 6'
