@@ -1,30 +1,25 @@
 'use client';
 
 import { Apple, MessageCircle } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { BrandLockup } from '@/components/common';
 import { Badge, Button } from '@/components/ui';
 import { OnboardingFrame } from '@/features/onboarding/ui/onboarding-frame';
+import { createGoogleAuthorizationUrl } from '@/features/onboarding/model/google-auth';
 
 function GoogleMark() {
   return <span aria-hidden='true' className='text-lg font-bold text-blue-600'>G</span>;
 }
 
 export function LoginScreen() {
-  const router = useRouter();
-
   const handleGoogleLogin = () => {
-    const oauthUrl = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL;
-
-    if (oauthUrl) {
-      window.location.assign(oauthUrl);
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      toast.error('Google 로그인 설정을 확인해주세요.');
       return;
     }
-
-    toast.info('Google OAuth 연결 전이라 프로필 설정 화면으로 이동합니다.');
-    router.push('/onboarding/profile');
+    window.location.assign(createGoogleAuthorizationUrl(window.location.origin, clientId));
   };
 
   return (
