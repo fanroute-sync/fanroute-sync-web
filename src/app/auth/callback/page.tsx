@@ -5,6 +5,7 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 
 import { exchangeGoogleAuthorizationCode } from '@/features/onboarding/api/google-auth-service';
 import { consumeGoogleOAuthState } from '@/features/onboarding/model/google-auth';
+import { getApiErrorMessage } from '@/lib/api/error-message';
 
 function GoogleAuthCallbackContent() {
   const router = useRouter();
@@ -26,9 +27,10 @@ function GoogleAuthCallbackContent() {
     void exchangeGoogleAuthorizationCode(code)
       .then(({ accessToken, newUser }) => {
         localStorage.setItem('accessToken', accessToken);
+        window.dispatchEvent(new Event('auth-session-change'));
         router.replace(newUser ? '/onboarding/profile' : '/');
       })
-      .catch(() => setErrorMessage('로그인에 실패했어요. 잠시 후 다시 시도해주세요.'));
+      .catch((error: unknown) => setErrorMessage(getApiErrorMessage(error, '로그인에 실패했어요. 잠시 후 다시 시도해주세요.')));
   }, [router, searchParams]);
 
   return (

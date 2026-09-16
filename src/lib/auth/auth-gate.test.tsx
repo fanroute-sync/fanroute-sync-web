@@ -11,6 +11,7 @@ vi.mock('next/navigation', () => ({
   usePathname: () => navigation.pathname,
   useRouter: () => ({ replace: navigation.replace }),
 }));
+vi.mock('@/lib/api/client', () => ({ restoreAccessToken: () => Promise.reject(new Error('No refresh cookie')) }));
 
 describe('AuthGate', () => {
   beforeEach(() => {

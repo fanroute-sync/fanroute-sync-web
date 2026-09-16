@@ -4,6 +4,17 @@ export interface ApiError {
 }
 
 export interface ApiResponse<T> {
-  data: T | null;
-  error: ApiError | null;
+  success: boolean;
+  status: number;
+  code: string;
+  message: string;
+  data: T;
+}
+
+export interface BackendErrorResponse {
+  success: false;
+  status: number;
+  code: string;
+  message: string;
+  data?: unknown;
 }
