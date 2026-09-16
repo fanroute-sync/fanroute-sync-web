@@ -19,6 +19,10 @@ export function LoginScreen() {
       toast.error('Google 로그인 설정을 확인해주세요.');
       return;
     }
+    if (!process.env.NEXT_PUBLIC_API_BASE_URL) {
+      toast.error('API 서버 설정을 확인해주세요.');
+      return;
+    }
     window.location.assign(createGoogleAuthorizationUrl(window.location.origin, clientId));
   };
 
