@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { AiGenerationScreen, type AiGenerationPreview } from '@/features/ai-schedule';
+import { ApiAiGenerationScreen } from '@/features/ai-schedule/ui/api-ai-generation-screen';
 import { getTripFixture } from '@/features/trip';
 import { findConcertFixture } from '@/features/trip-create';
 
@@ -13,6 +14,7 @@ const previews: AiGenerationPreview[] = ['auto', 'loading', 'failure', 'success'
 
 export default async function AiGeneratingRoutePage({ params, searchParams }: AiGeneratingRoutePageProps) {
   const [{ tripId }, { concertId, tripStartDate, targetDate, preview }] = await Promise.all([params, searchParams]);
+  if (process.env.NEXT_PUBLIC_API_BASE_URL && /^\d+$/.test(tripId) && targetDate) return <ApiAiGenerationScreen tripId={Number(tripId)} date={targetDate} />;
   const concert = concertId ? findConcertFixture(concertId) : undefined;
   const trip = getTripFixture(tripId);
 
