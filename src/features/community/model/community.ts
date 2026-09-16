@@ -1,38 +1,21 @@
-export type CommunityPostType = 'INFO' | 'REFERENCE_ROUTE' | 'COMPANION';
+export type CommunityPostType = 'INFO' | 'ROUTE' | 'COMPANION';
 export type CommunitySort = 'latest' | 'popular';
-
-export interface CommunityComment {
-  id: string;
-  author: string;
-  content: string;
-  createdAt: string;
-  likeCount: number;
-  liked: boolean;
-  rootCommentId: string | null;
-  mine: boolean;
-}
-
 export interface CommunityPost {
-  id: string;
-  type: CommunityPostType;
-  title: string;
-  content: string;
-  author: string;
-  createdAt: string;
-  tags: string[];
-  region: string;
-  concertName?: string;
-  placeNames: string[];
-  likeCount: number;
-  liked: boolean;
-  mine: boolean;
-  comments: CommunityComment[];
-  route?: { tripId: string; period: string; places: string[]; shareLink: string };
-  companion?: { date: string; currentMembers: number; maxMembers: number };
+  id: number; type: CommunityPostType; title: string; content: string; tags: string[];
+  authorId: number; authorNickname: string; concertId: number | null; concertTitle: string | null;
+  tripPlanId: number | null; companionDate: string | null; capacity: number | null;
+  currentMembers: number | null; region: string | null; likeCount: number; likedByMe: boolean;
+  commentCount: number; createdAt: string;
 }
-
-export const POST_TYPE_LABELS: Record<CommunityPostType, string> = {
-  INFO: '정보 공유',
-  REFERENCE_ROUTE: '참고 루트',
-  COMPANION: '동행 모집',
-};
+export type CommunityPostSummary = CommunityPost;
+export interface CommunityComment {
+  id: number; parentId: number | null; authorId: number; authorNickname: string;
+  content: string; likeCount: number; likedByMe: boolean; createdAt: string;
+}
+export interface CommunityPostDetail { post: CommunityPost; comments: CommunityComment[] }
+export type CommunityPostCreateRequest =
+  | { type: 'INFO'; title: string; tags: string[]; region?: string; content: string }
+  | { type: 'ROUTE'; title: string; tags: string[]; region?: string; tripPlanId: number }
+  | { type: 'COMPANION'; title: string; tags: string[]; region?: string; concertId: number; companionDate: string; capacity: number };
+export interface CommunityPostListParams { type?: CommunityPostType; query?: string; region?: string; sort: CommunitySort; page: number; size: number }
+export const POST_TYPE_LABELS: Record<CommunityPostType, string> = { INFO: '정보 공유', ROUTE: '참고 루트', COMPANION: '동행 모집' };

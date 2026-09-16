@@ -1,21 +1,24 @@
-import { communityPostFixtures } from '@/features/community/fixtures/community-fixtures';
-import type { CommunityComment, CommunityPost } from '@/features/community/model/community';
+import { z } from 'zod';
+import { apiClient } from '@/lib/api/client';
+import { envelope, page } from '@/lib/api/response';
+import type { CommunityPostCreateRequest, CommunityPostListParams } from '../model/community';
 
-let posts = structuredClone(communityPostFixtures);
-
-async function tick() { await Promise.resolve(); }
-
+const post = z.object({
+  id: z.number(), type: z.enum(['INFO', 'ROUTE', 'COMPANION']), title: z.string(), content: z.string(), tags: z.array(z.string()),
+  authorId: z.number(), authorNickname: z.string(), concertId: z.number().nullable(), concertTitle: z.string().nullable(),
+  tripPlanId: z.number().nullable(), companionDate: z.string().nullable(), capacity: z.number().nullable(),
+  currentMembers: z.number().nullable(), region: z.string().nullable(), likeCount: z.number(), likedByMe: z.boolean(), commentCount: z.number(), createdAt: z.string(),
+});
+const comment = z.object({ id: z.number(), parentId: z.number().nullable(), authorId: z.number(), authorNickname: z.string(), content: z.string(), likeCount: z.number(), likedByMe: z.boolean(), createdAt: z.string() });
+const detail = z.object({ post, comments: z.array(comment) });
+const postPage = page(post).extend({ first: z.boolean(), last: z.boolean() });
 export const communityRepository = {
-  async listPosts() { await tick(); return structuredClone(posts); },
-  async createPost(post: CommunityPost) { await tick(); posts = [post, ...posts]; return structuredClone(post); },
-  async getPost(postId: string) { await tick(); return structuredClone(posts.find((post) => post.id === postId)); },
-  async togglePostLike(postId: string) { await tick(); const post = posts.find((item) => item.id === postId); if (!post) throw new Error('NOT_FOUND'); post.liked = !post.liked; post.likeCount += post.liked ? 1 : -1; return structuredClone(post); },
-  async addComment(postId: string, comment: CommunityComment) { await tick(); const post = posts.find((item) => item.id === postId); if (!post) throw new Error('NOT_FOUND'); post.comments.push(comment); return structuredClone(comment); },
-  async toggleCommentLike(postId: string, commentId: string) { await tick(); const comment = posts.find((post) => post.id === postId)?.comments.find((item) => item.id === commentId); if (!comment) throw new Error('NOT_FOUND'); comment.liked = !comment.liked; comment.likeCount += comment.liked ? 1 : -1; return structuredClone(comment); },
-  async deleteComment(postId: string, commentId: string) { await tick(); const post = posts.find((item) => item.id === postId); if (!post) throw new Error('NOT_FOUND'); const target = post.comments.find((comment) => comment.id === commentId); const rootId = target?.rootCommentId ?? commentId; post.comments = post.comments.filter((comment) => comment.id !== commentId && (target?.rootCommentId || comment.rootCommentId !== rootId)); },
-  async deletePost(postId: string) { await tick(); posts = posts.filter((post) => post.id !== postId); },
+  async listPosts(params: CommunityPostListParams) { const response = await apiClient.get<unknown>('/community/posts', { params }); return envelope(postPage).parse(response.data).data; },
+  async getPost(postId: number) { const response = await apiClient.get<unknown>(`/community/posts/${postId}`); return envelope(detail).parse(response.data).data; },
+  async createPost(input: CommunityPostCreateRequest) { const response = await apiClient.post<unknown>('/community/posts', input); return envelope(post).parse(response.data).data; },
+  async deletePost(postId: number) { await apiClient.delete(`/community/posts/${postId}`); },
+  async setPostLike(postId: number, liked: boolean) { await apiClient.request({ url: `/community/posts/${postId}/like`, method: liked ? 'PUT' : 'DELETE' }); },
+  async addComment(postId: number, input: { content: string; parentId: number | null }) { const response = await apiClient.post<unknown>(`/community/posts/${postId}/comments`, input); return envelope(comment).parse(response.data).data; },
+  async deleteComment(postId: number, commentId: number) { await apiClient.delete(`/community/posts/${postId}/comments/${commentId}`); },
+  async setCommentLike(postId: number, commentId: number, liked: boolean) { await apiClient.request({ url: `/community/posts/${postId}/comments/${commentId}/like`, method: liked ? 'PUT' : 'DELETE' }); },
 };
-
-export function getCommunityPostFixture(postId: string) {
-  return communityPostFixtures.find((post) => post.id === postId);
-}

@@ -8,12 +8,19 @@ import AiGeneratingRoutePage from '@/app/trips/[tripId]/ai-generating/page';
 import TripDayPage from '@/app/trips/[tripId]/days/[date]/page';
 import type { AiGenerationInput } from '@/features/ai-schedule/model/ai-generation';
 import { CommunityWriteScreen } from '@/features/community/ui/community-write-screen';
+import { communityRepository } from '@/features/community/api/community-repository';
+import { listTripPlans } from '@/features/trip/api/trip-plan-service';
 import { registeredHomeFixture } from '@/features/home/fixtures/home-fixtures';
 import { LanguageScreen } from '@/features/onboarding/ui/language-screen';
 import { LoginScreen } from '@/features/onboarding/ui/login-screen';
 import { TripCreateScreen } from '@/features/trip-create/ui/trip-create-screen';
 import type { TripDay } from '@/features/trip/model/trip';
 import { TripListScreen } from '@/features/trip/ui/trip-list-screen';
+
+vi.mock('@/features/trip/api/trip-plan-service', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@/features/trip/api/trip-plan-service')>();
+  return { ...original, listTripPlans: vi.fn() };
+});
 
 const { push } = vi.hoisted(() => ({ push: vi.fn() }));
 vi.mock('next/navigation', async (importOriginal) => {
@@ -66,12 +73,16 @@ describe('Rev.3 integrated flows', () => {
 
   it('preselects a shared trip and opens the created route detail', async () => {
     push.mockReset(); const user = userEvent.setup();
-    render(<CommunityWriteScreen initialType='REFERENCE_ROUTE' initialTripId='trip-busan-2026' />, { wrapper });
+    vi.mocked(listTripPlans).mockResolvedValueOnce([{ tripPlanId: 12, concertId: null, concertTitle: '부산 공연', arrivalAt: '2026-08-22T09:00:00', departureAt: '2026-08-24T18:00:00' }]);
+    const created = vi.spyOn(communityRepository, 'createPost').mockResolvedValueOnce({ id: 33, type: 'ROUTE', title: '통합 점검 공유 루트', content: '복사용 텍스트', tags: ['공연', '부산'], authorId: 1, authorNickname: '여행자', concertId: null, concertTitle: null, tripPlanId: 12, companionDate: null, capacity: null, currentMembers: null, region: null, likeCount: 0, likedByMe: false, commentCount: 0, createdAt: '2026-08-22T09:00:00' });
+    render(<CommunityWriteScreen initialType='ROUTE' initialTripId='12' />, { wrapper });
     expect(screen.getByRole('tab', { name: '참고 루트' })).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByLabelText('내 저장 일정')).toHaveValue('trip-busan-2026');
+    expect(await screen.findByLabelText('내 저장 일정')).toHaveValue('12');
     await user.type(screen.getByLabelText('제목'), '통합 점검 공유 루트');
     await user.type(screen.getByLabelText('태그'), '공연, 부산');
     await user.click(screen.getByRole('button', { name: '게시' }));
-    await waitFor(() => expect(push).toHaveBeenCalledWith(expect.stringMatching(/^\/community\/post-/)));
+    await waitFor(() => expect(push).toHaveBeenCalledWith('/community/33'));
+    expect(created).toHaveBeenCalledWith({ type: 'ROUTE', title: '통합 점검 공유 루트', tripPlanId: 12, tags: ['공연', '부산'] });
+    created.mockRestore();
   });
 });
