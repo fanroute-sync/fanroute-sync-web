@@ -23,7 +23,7 @@ export function LoginScreen() {
   };
 
   return (
-    <OnboardingFrame step={2} brand={<BrandLockup />} title='Troadie 시작하기' description='소셜 계정으로 간편하게 로그인하세요.'>
+    <OnboardingFrame brand={<BrandLockup />} title='Troadie 시작하기' description='소셜 계정으로 간편하게 로그인하세요.'>
       <div className='mt-8 space-y-3'>
         <Button variant='outline' size='lg' fullWidth onClick={handleGoogleLogin}>
           <GoogleMark /> Google로 계속하기

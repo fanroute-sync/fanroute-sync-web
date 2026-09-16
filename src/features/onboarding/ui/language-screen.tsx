@@ -13,7 +13,7 @@ const languages = [
 
 export function LanguageScreen() {
   return (
-    <OnboardingFrame step={1} title='언어를 선택해주세요' description='서비스에서 사용할 언어를 선택할 수 있어요.'>
+    <OnboardingFrame title='언어를 선택해주세요' description='서비스에서 사용할 언어를 선택할 수 있어요.'>
       <div role='radiogroup' aria-label='언어' className='space-y-3'>
         {languages.map((language) => (
           <Card

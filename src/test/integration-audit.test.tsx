@@ -41,6 +41,7 @@ describe('Rev.3 integrated flows', () => {
     expect(screen.getAllByText('Phase 2')).toHaveLength(3);
     unmount();
     render(<LoginScreen />);
+    expect(screen.queryByText(/STEP \d OF \d/)).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Google로 계속하기/ })).toBeEnabled();
     expect(screen.getByRole('button', { name: /Apple로 계속하기/ })).toBeDisabled();
     expect(screen.getByRole('button', { name: /Meta로 계속하기/ })).toBeDisabled();

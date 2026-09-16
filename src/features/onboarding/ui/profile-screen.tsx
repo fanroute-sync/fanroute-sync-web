@@ -93,7 +93,7 @@ export function ProfileScreen() {
   const statusColor = availability === 'available' ? 'text-emerald-600' : availability === 'checking' ? 'text-gray-500' : 'text-red-600';
 
   return (
-    <OnboardingFrame step={3} title='프로필을 설정해주세요' description='프로필 사진은 나중에 추가하거나 변경할 수 있어요.'>
+    <OnboardingFrame title='프로필을 설정해주세요' description='프로필 사진은 나중에 추가하거나 변경할 수 있어요.'>
       <form className='flex flex-1 flex-col' onSubmit={handleSubmit(submitProfile)}>
         <div className='mb-8 flex flex-col items-center'>
           <div className='relative'>
