@@ -5,6 +5,7 @@ import { useState, type ReactNode } from 'react';
 import { Toaster } from 'sonner';
 
 import { createQueryClient } from '@/lib/query/query-client';
+import { AuthGate } from '@/lib/auth/auth-gate';
 
 interface ProvidersProps {
   children: ReactNode;
@@ -15,7 +16,7 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <AuthGate>{children}</AuthGate>
       <Toaster richColors position='top-center' />
     </QueryClientProvider>
   );
