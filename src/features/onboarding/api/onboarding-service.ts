@@ -1,4 +1,5 @@
 import { nicknameSchema } from '@/features/onboarding/model/nickname';
+import { checkNicknameAvailability, updateMyNickname } from '@/features/onboarding/api/user-service';
 
 export interface ProfileSetupInput {
   nickname: string;
@@ -26,6 +27,21 @@ export const onboardingFixtureService: OnboardingService = {
       throw new Error('NICKNAME_DUPLICATE');
     }
 
+    return { nickname };
+  },
+};
+
+export const onboardingApiService: OnboardingService = {
+  async checkNickname(nickname) {
+    const result = await checkNicknameAvailability(nickname);
+    return { available: result.available };
+  },
+  async completeProfile(input) {
+    const nickname = nicknameSchema.parse(input.nickname);
+    const result = await checkNicknameAvailability(nickname);
+    if (!result.available) throw new Error('NICKNAME_DUPLICATE');
+    await updateMyNickname(nickname);
+    // The backend currently exposes nickname updates only; image upload is pending API support.
     return { nickname };
   },
 };

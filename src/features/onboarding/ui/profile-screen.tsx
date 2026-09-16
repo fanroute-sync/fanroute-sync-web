@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Button, Input } from '@/components/ui';
-import { onboardingFixtureService } from '@/features/onboarding/api/onboarding-service';
+import { onboardingApiService, onboardingFixtureService } from '@/features/onboarding/api/onboarding-service';
 import { type NicknameAvailability, nicknameSchema } from '@/features/onboarding/model/nickname';
 import { OnboardingFrame } from '@/features/onboarding/ui/onboarding-frame';
 
@@ -25,6 +25,7 @@ const statusMessages: Record<Exclude<NicknameAvailability, 'idle'>, string> = {
 };
 
 export function ProfileScreen() {
+  const service = process.env.NEXT_PUBLIC_API_BASE_URL ? onboardingApiService : onboardingFixtureService;
   const router = useRouter();
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -51,7 +52,7 @@ export function ProfileScreen() {
     let active = true;
     const timer = window.setTimeout(async () => {
       try {
-        const result = await onboardingFixtureService.checkNickname(parsedValue.data);
+        const result = await service.checkNickname(parsedValue.data);
         if (active) setNicknameResult({ nickname: parsedValue.data, status: result.available ? 'available' : 'duplicate' });
       } catch {
         if (active) setNicknameResult({ nickname: parsedValue.data, status: 'error' });
@@ -62,7 +63,7 @@ export function ProfileScreen() {
       active = false;
       window.clearTimeout(timer);
     };
-  }, [nickname]);
+  }, [nickname, service]);
 
   useEffect(() => () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -77,7 +78,7 @@ export function ProfileScreen() {
 
   const submitProfile = async ({ nickname: submittedNickname }: ProfileFormValues) => {
     try {
-      await onboardingFixtureService.completeProfile({ nickname: submittedNickname, profileImage });
+      await service.completeProfile({ nickname: submittedNickname, profileImage });
       toast.success('프로필 설정이 완료되었어요.');
       router.push('/');
     } catch (error) {
@@ -103,10 +104,10 @@ export function ProfileScreen() {
             <label htmlFor='profile-image' className='absolute -bottom-1 -right-1 grid size-9 cursor-pointer place-items-center rounded-full bg-violet-600 text-white shadow-md focus-within:ring-2 focus-within:ring-violet-500 focus-within:ring-offset-2'>
               <Camera aria-hidden='true' size={18} />
               <span className='sr-only'>프로필 사진 선택</span>
-              <input id='profile-image' type='file' accept='image/png,image/jpeg,image/webp' className='sr-only' onChange={handleImageChange} />
+              <input id='profile-image' type='file' accept='image/png,image/jpeg,image/webp' className='sr-only' disabled={Boolean(process.env.NEXT_PUBLIC_API_BASE_URL)} onChange={handleImageChange} />
             </label>
           </div>
-          <p className='mt-3 text-sm text-gray-500'>프로필 사진 (선택)</p>
+          <p className='mt-3 text-sm text-gray-500'>{process.env.NEXT_PUBLIC_API_BASE_URL ? '프로필 사진 설정은 준비 중이에요.' : '프로필 사진 (선택)'}</p>
         </div>
 
         <div>

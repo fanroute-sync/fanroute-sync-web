@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -11,6 +11,9 @@ import { MyPageScreen } from '@/features/mypage/ui/mypage-screen';
 
 const { replace } = vi.hoisted(() => ({ replace: vi.fn() }));
 vi.mock('next/navigation', () => ({ usePathname: () => '/my', useRouter: () => ({ back: vi.fn(), push: vi.fn(), replace }) }));
+vi.mock('@/features/onboarding/api/auth-session-service', () => ({
+  logoutSession: async () => { localStorage.removeItem('accessToken'); },
+}));
 
 function wrapper({ children }: { children: ReactNode }) { return <QueryClientProvider client={new QueryClient()}>{children}</QueryClientProvider>; }
 
@@ -26,6 +29,7 @@ describe('Phase 8 my page screens', () => {
     const dialog = screen.getByRole('alertdialog');
     expect(dialog).toHaveTextContent('저장된 일정과 활동 내역은그대로 유지됩니다.');
     await user.click(within(dialog).getByRole('button', { name: '로그아웃' }));
+    await waitFor(() => expect(replace).toHaveBeenCalledWith('/login'));
     expect(localStorage.getItem('accessToken')).toBeNull();
     expect(replace).toHaveBeenCalledWith('/login');
   });

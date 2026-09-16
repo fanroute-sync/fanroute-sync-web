@@ -1,2 +1,3 @@
 import { myPageFixture, ProfileEditScreen } from '@/features/mypage';
-export default function MyProfilePage() { return <ProfileEditScreen initialNickname={myPageFixture.profile.nickname} />; }
+import { ApiProfileEditScreen } from '@/features/mypage/ui/api-profile-screens';
+export default function MyProfilePage() { return process.env.NEXT_PUBLIC_API_BASE_URL ? <ApiProfileEditScreen /> : <ProfileEditScreen initialNickname={myPageFixture.profile.nickname} />; }
