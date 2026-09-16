@@ -14,15 +14,21 @@ function hasAccessToken() {
   return Boolean(localStorage.getItem('accessToken'));
 }
 
+function subscribeToHydration() {
+  return () => undefined;
+}
+
 export function AuthGate({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const hydrated = useSyncExternalStore(subscribeToHydration, () => true, () => false);
   const signedIn = useSyncExternalStore(subscribeToSessionChange, hasAccessToken, () => false);
-  const needsLogin = !publicPaths.has(pathname) && !signedIn;
+  const protectedPath = !publicPaths.has(pathname);
+  const needsLogin = hydrated && protectedPath && !signedIn;
 
   useEffect(() => {
     if (needsLogin) router.replace('/login');
   }, [needsLogin, router]);
 
-  return needsLogin ? null : children;
+  return protectedPath && (!hydrated || !signedIn) ? null : children;
 }

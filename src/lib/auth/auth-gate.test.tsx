@@ -1,4 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react';
+import { hydrateRoot } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AuthGate } from './auth-gate';
@@ -27,6 +30,22 @@ describe('AuthGate', () => {
     render(<AuthGate><p>서비스 화면</p></AuthGate>);
     expect(screen.getByText('서비스 화면')).toBeInTheDocument();
     expect(navigation.replace).not.toHaveBeenCalled();
+  });
+
+  it('keeps a saved login during hydration after a reload', async () => {
+    localStorage.setItem('accessToken', 'token');
+    const element = <AuthGate><p>서비스 화면</p></AuthGate>;
+    const container = document.createElement('div');
+    container.innerHTML = renderToString(element);
+    document.body.appendChild(container);
+
+    let root: ReturnType<typeof hydrateRoot> | undefined;
+    await act(async () => { root = hydrateRoot(container, element); });
+
+    expect(container).toHaveTextContent('서비스 화면');
+    expect(navigation.replace).not.toHaveBeenCalled();
+    await act(async () => { root?.unmount(); });
+    container.remove();
   });
 
   it('keeps the login page available to visitors', () => {
