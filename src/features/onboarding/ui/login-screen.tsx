@@ -7,13 +7,14 @@ import { BrandLockup } from '@/components/common';
 import { Badge, Button } from '@/components/ui';
 import { OnboardingFrame } from '@/features/onboarding/ui/onboarding-frame';
 import { createGoogleAuthorizationUrl } from '@/features/onboarding/model/google-auth';
+import { requestPushPermission } from '@/lib/firebase/push-token-sync';
 
 function GoogleMark() {
   return <span aria-hidden='true' className='text-lg font-bold text-blue-600'>G</span>;
 }
 
 export function LoginScreen() {
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     if (!clientId) {
       toast.error('Google 로그인 설정을 확인해주세요.');
@@ -23,6 +24,7 @@ export function LoginScreen() {
       toast.error('API 서버 설정을 확인해주세요.');
       return;
     }
+    await requestPushPermission();
     window.location.assign(createGoogleAuthorizationUrl(window.location.origin, clientId));
   };
 
