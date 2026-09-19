@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 
 import { createQueryClient } from '@/lib/query/query-client';
 import { AuthGate } from '@/lib/auth/auth-gate';
+import { PushTokenSync } from '@/lib/firebase/push-token-sync';
 
 interface ProvidersProps {
   children: ReactNode;
@@ -17,6 +18,7 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthGate>{children}</AuthGate>
+      <PushTokenSync />
       <Toaster richColors position='top-center' />
     </QueryClientProvider>
   );
