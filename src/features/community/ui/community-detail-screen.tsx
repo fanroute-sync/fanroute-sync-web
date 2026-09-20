@@ -12,7 +12,6 @@ import { getMyProfile, usersKeys } from '@/features/onboarding/api/user-service'
 import { useAddComment, useCommunityPost, useDeleteComment, useDeletePost, useSetCommentLike, useSetPostLike } from '../api/community-queries';
 import { POST_TYPE_LABELS } from '../model/community';
 import { CommentThread } from './comment-thread';
-function profileId(value: unknown): number | null { return typeof value === 'object' && value !== null && 'id' in value && typeof value.id === 'number' ? value.id : typeof value === 'object' && value !== null && 'userId' in value && typeof value.userId === 'number' ? value.userId : null; }
 export function CommunityDetailScreen({ postId }: { postId: string }) {
   const id = Number(postId); const router = useRouter(); const detail = useCommunityPost(id);
   const profile = useQuery({ queryKey: usersKeys.me(), queryFn: getMyProfile });
@@ -22,7 +21,7 @@ export function CommunityDetailScreen({ postId }: { postId: string }) {
   const fail = (error: unknown) => toast.error(getApiErrorMessage(error));
   if (!Number.isInteger(id) || id < 1 || detail.isError) return <AppShell showBottomNavigation={false} header={<PageHeader title='게시글' backHref='/community' />}><ErrorState onRetry={() => void detail.refetch()} /></AppShell>;
   if (detail.isPending) return <AppShell showBottomNavigation={false} header={<PageHeader title='게시글' backHref='/community' />}><Loading label='게시글을 불러오는 중' /></AppShell>;
-  const { post, comments } = detail.data; const userId = profileId(profile.data);
+  const { post, comments } = detail.data; const userId = profile.data?.id ?? null;
   const submitComment = () => { if (!content.trim() || addComment.isPending) return; addComment.mutate({ content: content.trim(), parentId: replying?.id ?? null }, { onSuccess: () => { setContent(''); setReplying(null); }, onError: fail }); };
   const copyRoute = async () => { try { await navigator.clipboard.writeText(post.content); toast.success('루트 내용을 복사했어요.'); } catch { toast.error('복사하지 못했어요.'); } };
   return <AppShell showBottomNavigation={false} header={<PageHeader title='게시글' backHref='/community' action={userId === post.authorId ? <button type='button' aria-label='게시글 삭제' onClick={() => setDeleteOpen(true)} className='grid size-9 place-items-center text-red-600'><Trash2 size={18} /></button> : null} />}><ContentContainer className='space-y-7'>

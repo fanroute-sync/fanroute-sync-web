@@ -46,7 +46,7 @@ describe('community screens', () => {
   });
   it('uses fetched like state, then refetched server state after post and comment likes', async () => {
     const user = userEvent.setup();
-    vi.mocked(getMyProfile).mockResolvedValue({ id: 9 });
+    vi.mocked(getMyProfile).mockResolvedValue({ id: 9, nickname: 'fanroute', email: 'user@example.com', authProvider: 'GOOGLE', status: 'ACTIVE' });
     let liked = true;
     const comment = { id: 3, parentId: null, authorId: 2, authorNickname: '팬', content: '댓글', likeCount: 2, likedByMe: true, createdAt: '2026-09-17T00:00:00' };
     const detailSpy = vi.spyOn(communityRepository, 'getPost').mockImplementation(async () => ({ post: { ...post, likedByMe: liked, likeCount: liked ? 2 : 1 }, comments: [{ ...comment, likedByMe: liked, likeCount: liked ? 2 : 1 }] }));
