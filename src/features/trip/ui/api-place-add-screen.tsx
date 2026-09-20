@@ -9,7 +9,7 @@ import { EmptyState, ErrorState, Loading } from '@/components/common';
 import { AppShell, ContentContainer, PageHeader } from '@/components/layout';
 import { Button, Input } from '@/components/ui';
 import { listPlaces, placeKeys, type PlaceCategory } from '@/features/trip/api/place-service';
-import { createItineraryItem, getItineraryDay, tripPlanKeys, updateItineraryItem } from '@/features/trip/api/trip-plan-service';
+import { createItineraryItemFromPlace, getItineraryDay, tripPlanKeys, updateItineraryItem } from '@/features/trip/api/trip-plan-service';
 import { VenuePlaceCollections } from '@/features/trip/ui/venue-place-collections';
 
 function placeIdentity(value: Record<string, unknown>) {
@@ -33,7 +33,7 @@ export function ApiPlaceAddScreen({ tripId, date, replaceId }: { tripId: number;
       if (!current || current.fixed) throw new Error('ITEM_NOT_EDITABLE');
       return updateItineraryItem(replaceId, { title: place.title, placeId: place.id, scheduledTime: current.scheduledTime ?? undefined, durationMinutes: current.durationMinutes ?? undefined });
     }
-    return createItineraryItem(day.data.itineraryDayId, { type: 'PLACE', title: place.title, placeId: place.id });
+    return createItineraryItemFromPlace(day.data.itineraryDayId, place.id);
   }, onSuccess: async () => { await client.invalidateQueries({ queryKey: tripPlanKeys.day(tripId, date) }); router.push(`/trips/${tripId}/days/${date}`); }, onError: () => toast.error('장소를 일정에 저장하지 못했어요.') });
   const options = places.data?.content.map(placeIdentity).filter((value): value is { id: number; title: string; address: string | null } => value !== null).filter((value) => `${value.title} ${value.address ?? ''}`.toLowerCase().includes(search.toLowerCase())) ?? [];
   return <AppShell showBottomNavigation={false} header={<PageHeader title={replaceId ? '장소 변경' : '장소 추가'} backHref={`/trips/${tripId}/days/${date}`} />}><ContentContainer className='space-y-5'>

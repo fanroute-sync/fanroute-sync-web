@@ -22,6 +22,8 @@ export function ApiTripDetailScreen({ tripId }: { tripId: number }) {
     {trip.isPending ? <Loading /> : trip.isError ? <ErrorState onRetry={() => void trip.refetch()} /> : <>
       <section><h2 className='text-xl font-bold'>{trip.data.concertTitle ?? '부산 여행'}</h2><p className='mt-2 text-sm text-gray-600'>{trip.data.arrivalAt.slice(0, 10)} — {trip.data.departureAt.slice(0, 10)}</p></section>
       <section><h3 className='mb-3 font-semibold'>일차별 일정</h3>{trip.data.itineraryDays.length === 0 ? <EmptyState title='아직 일정이 없어요' /> : <ul className='space-y-2'>{trip.data.itineraryDays.map((day) => <li key={day.id}><Link href={`/trips/${tripId}/days/${day.date}`} className='block rounded-xl border border-gray-200 p-4'>{day.date}{day.concertDay ? ' · 공연일' : ''}</Link></li>)}</ul>}</section>
+      <Link href={`/trips/${tripId}/accommodation`} className='block rounded-xl border border-gray-200 p-4 font-semibold'>숙박 정보 입력</Link>
+      <Link href={`/trips/${tripId}/style`} className='block rounded-xl border border-gray-200 p-4 font-semibold'>여행 스타일 설정</Link>
       <Button variant='outline' fullWidth disabled={remove.isPending} onClick={() => { if (window.confirm('여행 일정을 삭제할까요?')) remove.mutate(); }}>여행 일정 삭제</Button>
     </>}
   </ContentContainer></AppShell>;
