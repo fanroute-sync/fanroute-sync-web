@@ -28,3 +28,6 @@ export async function listNotifications(size = 30) {
   const response = await apiClient.get<unknown>('/notifications', { params: { size } });
   return envelope(notificationList).parse(response.data).data;
 }
+export async function markNotificationRead(id: number) {
+  await apiClient.patch(`/notifications/${id}/read`);
+}

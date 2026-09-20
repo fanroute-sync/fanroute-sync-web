@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { apiClient } from '@/lib/api/client';
-import { listNotifications } from './notification-service';
+import { listNotifications, markNotificationRead } from './notification-service';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -16,5 +16,10 @@ describe('notification list API', () => {
     expect(get).toHaveBeenCalledWith('/notifications', { params: { size: 30 } });
     expect(result.notifications[0].readAt).toBeNull();
     expect(result.unreadCount).toBe(1);
+  });
+  it('marks a notification read without a request body', async () => {
+    const patch = vi.spyOn(apiClient, 'patch').mockResolvedValue({ data: null });
+    await markNotificationRead(7);
+    expect(patch).toHaveBeenCalledWith('/notifications/7/read');
   });
 });
