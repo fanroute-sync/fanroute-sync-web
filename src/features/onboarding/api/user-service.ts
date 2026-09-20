@@ -4,12 +4,21 @@ import { apiClient } from '@/lib/api/client';
 import { envelope } from '@/lib/api/response';
 
 const nicknameAvailability = z.object({ nickname: z.string(), available: z.boolean() });
+const myProfile = z.object({
+  id: z.number().int().positive(),
+  nickname: z.string(),
+  email: z.email(),
+  authProvider: z.string(),
+  status: z.string(),
+});
+
+export type MyProfile = z.infer<typeof myProfile>;
 
 export const usersKeys = { all: ['users'] as const, me: () => ['users', 'me'] as const };
 
 export async function getMyProfile() {
   const response = await apiClient.get<unknown>('/users/me');
-  return envelope(z.unknown()).parse(response.data).data;
+  return envelope(myProfile).parse(response.data).data;
 }
 
 export async function checkNicknameAvailability(nickname: string) {

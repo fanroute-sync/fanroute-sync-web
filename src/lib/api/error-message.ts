@@ -2,6 +2,7 @@ import { isAxiosError } from 'axios';
 
 const messages: Record<string, string> = {
   COMMON_INVALID_PARAMETER: '입력값을 확인해주세요.',
+  AUTHENTICATION_REQUIRED: '로그인이 필요합니다. 다시 로그인해주세요.',
   AUTH_GOOGLE_CODE_INVALID: 'Google 로그인 정보를 확인할 수 없습니다. 다시 로그인해주세요.',
   AUTH_GOOGLE_ID_TOKEN_INVALID: 'Google 로그인 정보를 확인할 수 없습니다. 다시 로그인해주세요.',
   AUTH_REFRESH_TOKEN_INVALID: '로그인 세션이 만료되었습니다. 다시 로그인해주세요.',
