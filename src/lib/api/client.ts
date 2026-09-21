@@ -39,6 +39,11 @@ export function restoreAccessToken(): Promise<string> {
 }
 
 apiClient.interceptors.request.use((config) => {
+  if (config.url === '/auth/google') {
+    // A previous session must not authenticate a new Google sign-in request.
+    config.headers.delete('Authorization');
+    return config;
+  }
   if (typeof window === 'undefined') {
     return config;
   }
