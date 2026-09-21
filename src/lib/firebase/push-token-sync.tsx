@@ -8,7 +8,7 @@ import { getFirebaseApp, isFirebaseMessagingConfigured } from '@/lib/firebase/cl
 let messageListenerRegistered = false;
 
 async function syncPushToken() {
-  if (!isFirebaseMessagingConfigured() || !('serviceWorker' in navigator)
+  if (!isFirebaseMessagingConfigured() || !('Notification' in window) || !('serviceWorker' in navigator)
       || Notification.permission !== 'granted' || !localStorage.getItem('accessToken')) {
     return;
   }
@@ -37,11 +37,16 @@ async function syncPushToken() {
 }
 
 export async function requestPushPermission() {
-  if (!isFirebaseMessagingConfigured() || !('Notification' in window)
-      || Notification.permission !== 'default') {
+  if (!('Notification' in window)) return;
+  if (!isFirebaseMessagingConfigured() || Notification.permission !== 'default') {
     return Notification.permission;
   }
-  return Notification.requestPermission();
+  try {
+    return await Notification.requestPermission();
+  } catch {
+    // Optional push permissions must not prevent Google sign-in.
+    return Notification.permission;
+  }
 }
 
 export function PushTokenSync() {
