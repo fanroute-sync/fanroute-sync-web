@@ -15,6 +15,7 @@ export function CommunityListScreen() {
   const [region, setRegion] = useState('부산 전체'); const [sort, setSort] = useState<CommunitySort>('latest'); const [page, setPage] = useState(0);
   const posts = useCommunityPosts({ ...(type === 'ALL' ? {} : { type }), ...(query.trim() ? { query: query.trim() } : {}), ...(region === '부산 전체' ? {} : { region }), sort, page, size: 20 });
   return <AppShell header={<Header />}><ContentContainer className='space-y-5'>
+    <div className='flex items-center justify-between'><h1 className='text-xl font-bold'>커뮤니티</h1><Link href='/chat' className='text-sm font-semibold text-violet-700'>동행 채팅</Link></div>
     <SearchInput aria-label='공연명, 장소, 해시태그 검색' placeholder='공연명 / 장소 / 해시태그 검색' value={query} onChange={(e) => { setQuery(e.target.value); setPage(0); }} onClear={() => { setQuery(''); setPage(0); }} />
     <Tabs items={tabs} value={type} onValueChange={(value) => { setType(value); setPage(0); }} ariaLabel='게시판 타입' className='overflow-x-auto' />
     <div className='flex gap-2'><label className='flex-1'><span className='sr-only'>지역 필터</span><select value={region} onChange={(e) => { setRegion(e.target.value); setPage(0); }} className='h-10 w-full rounded-xl border border-gray-300 bg-white px-3 text-sm'><option>부산 전체</option><option>수영구</option><option>연제구</option><option>해운대구</option></select></label>
