@@ -13,6 +13,7 @@ const messages: Record<string, string> = {
   AI_ITINERARY_GENERATION_LIMIT_EXCEEDED: 'AI 일정 생성 가능 횟수를 모두 사용했습니다.',
   SCHEDULE_AI_ITINERARY_GENERATION_LIMIT_EXCEEDED: 'AI 일정 생성 가능 횟수를 모두 사용했습니다.',
   SCHEDULE_FIXED_ITINERARY_ITEM: '공연 일정은 수정하거나 삭제할 수 없습니다.',
+  SCHEDULE_INVALID_ACCOMMODATION: '숙소 정보 또는 숙박 기간이 올바르지 않습니다.',
   CHAT_ROOM_NOT_FOUND: '채팅방을 찾을 수 없습니다.',
   CHAT_FORBIDDEN: '이 채팅방에 접근할 권한이 없습니다.',
   CHAT_INVALID_MESSAGE: '메시지 또는 읽음 대상을 확인해주세요.',
